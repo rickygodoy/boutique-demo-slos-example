@@ -1,0 +1,32 @@
+
+Diagram generated with: https://www.websequencediagrams.com/
+
+
+##### Load Home Page #####
+
+
+```
+title Load Home Page
+
+participant User as user
+participant Frontend as fe
+participant Currency Svc as curr
+participant ProductCatalog Svc as pc
+participant Cart Svc as cart
+
+
+user->fe: GET / \n(home page)
+fe->curr: gRPC: GetSupportedCurrencies
+curr->fe: currency codes
+
+fe->pc: gRPC: ListProducts
+pc->fe: product list
+
+fe->cart: gRPC: GetCart
+cart->fe: item list
+
+fe->fe: build view \n render template
+
+fe->user: HTTP response
+```
+
