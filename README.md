@@ -31,8 +31,8 @@ This is a list of potential User Journeys to be implemented for this application
 
 | Journeys                      | Critical?     | Developed?  |
 | ----------------------------- |:-------------:| -----------:|
-| Load home page                | Yes           |   No        |
-| View product details          | Yes           |   No        |
+| Load home page                | Yes           |   Yes       |
+| View product details          | Yes           |   Yes       |
 | Add product to cart           | Yes           |   No        |
 | Keep browsing                 | Yes           |   No        |
 | View cart                     | Yes           |   No        |

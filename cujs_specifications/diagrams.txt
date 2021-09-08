@@ -30,3 +30,54 @@ fe->fe: build view \n render template
 fe->user: HTTP response
 ```
 
+##### Load Product Details Page #####
+
+```
+title View Product Details
+
+participant User as user
+participant Frontend as fe
+participant ProductCatalog Svc as pc
+participant Currency Svc as curr
+participant Cart Svc as cart
+participant Recomm Svc as reco
+participant Ad Svc as ad
+participant Assets Svc as ast
+
+
+user->fe: GET /product/{ID} \n(product page)
+
+fe->pc: gRPC: GetProduct
+pc->fe: product details
+
+
+fe->curr: gRPC: GetSupportedCurrencies
+curr->fe: currency codes
+
+
+fe->cart: gRPC: GetCart
+cart->fe: cart item list
+
+fe->curr: gRPC ConvertCurrency
+curr->fe: converted value
+
+fe->reco: gRPC: ListRecommendations
+reco->fe: product list
+
+loop For all recomms
+    fe->pc: gRPC: GetProduct
+    pc->fe: product details
+end
+
+fe->ad: gRPC: GetAds
+ad->fe: ad list
+
+
+fe->fe: build view \n render template
+fe->user: HTTP response
+
+user->fe: GET /static/img/products/{PRODUCT_NAME}
+fe->ast: static image request
+ast->fe: image bytes
+fe->user: image bytes
+```
