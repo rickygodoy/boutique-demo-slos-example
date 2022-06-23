@@ -1,9 +1,49 @@
+# Diagrams Code
 
-Diagram generated with: https://www.websequencediagrams.com/
+## Diagram generated with: https://www.websequencediagrams.com/
+
+## Place Order
+
+```
+title Place Order
+
+participant User as user
+participant Frontend as fe
+participant Checkout Svc as ch
+participant Currency Svc as curr
+participant Recomm Svc as reco
+participant Product Catalog Svc as pc
+participant Assets Svc as ast
+participant CDN as cdn
 
 
-##### Load Home Page #####
+user->fe: POST /cart/checkout \n(with form data in body)
 
+fe->ch: gRPC: PlaceOrder
+ch->fe: order details
+
+fe->curr: gRPC: GetSupportedCurrencies
+curr->fe: currency codes
+
+fe->reco: gRPC: ListRecommendations
+reco->fe: product list
+
+loop For all recomms
+    fe->pc: gRPC: GetProduct
+    pc->fe: product details
+end
+
+fe->fe: build view \n render template
+fe->user: HTTP response
+
+user->ast: GET /static/*
+ast->user: file bytes
+
+user->cdn: GET: JS/CSS
+cdn->user: asset file
+```
+
+## Load Home Page
 
 ```
 title Load Home Page
@@ -30,7 +70,7 @@ fe->fe: build view \n render template
 fe->user: HTTP response
 ```
 
-##### Load Product Details Page #####
+## Load Product Details Page
 
 ```
 title View Product Details
