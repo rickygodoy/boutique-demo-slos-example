@@ -2,6 +2,84 @@
 
 ## Diagram generated with: https://www.websequencediagrams.com/
 
+## View Cart
+
+```
+title View Cart
+
+participant User as user
+participant Frontend as fe
+participant ProductCatalog Svc as pc
+participant Cart Svc as cs
+participant Redis as db
+participant Currency Svc as cus
+participant Recomm Svc as rs
+participant Shipping Svc as ss
+
+user->fe: GET /cart
+fe->cus: gRPC: getCurrencies
+cus->fe: currency codes
+fe->cs: gRPC: getCart
+cs->db: GetCart
+db->cs: 
+cs->fe: retun cart itens
+fe->rs: gRPC: getRecommendations
+rs->fe: recomendation list
+fe->ss: gRPC: getShippingQuote
+ss->fe: shipping costs
+loop For all cart products
+fe->pc: gRPC: getProduct
+pc->fe: product details
+fe->cus: gRPC: convertCurrency
+cus->fe: converted product price
+end
+fe->fe: build view \n render template
+fe->user: HTTP response
+```
+
+## Add Product to Cart 
+
+```
+title Add product to cart
+
+participant User as user
+participant Frontend as fe
+participant ProductCatalog Svc as pc
+participant Cart Svc as cs
+participant Redis as db
+participant Currency Svc as cus
+participant Recomm Svc as rs
+participant Shipping Svc as ss
+
+user->fe: POST /cart \n (Add To Cart Button)
+fe->pc: gRPC: getProduct
+pc->fe: product details
+fe->cs: gRPC: insertCart
+cs->db: AddItem
+db->cs: 
+cs->fe: 
+fe->user: HTTP response 302 \n redirect to /cart
+user->fe: GET /cart
+fe->cus: gRPC: getCurrencies
+cus->fe: currency codes
+fe->cs: gRPC: getCart
+cs->db: GetCart
+db->cs: 
+cs->fe: retun cart itens
+fe->rs: gRPC: getRecommendations
+rs->fe: recomendation list
+fe->ss: gRPC: getShippingQuote
+ss->fe: shipping costs
+loop For all cart products
+fe->pc: gRPC: getProduct
+pc->fe: product details
+fe->cus: gRPC: convertCurrency
+cus->fe: converted product price
+end
+fe->fe: build view \n render template
+fe->user: HTTP response
+```
+
 ## Place Order
 
 ```
