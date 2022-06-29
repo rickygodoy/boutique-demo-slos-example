@@ -55,7 +55,7 @@ Users add products to cart to potentially order them.
 
 **Good events**
 
-- Response status 2xx, 3xx and 4xx excl. 429
+- Response status 3xx and 4xx excl. 429
 
 **SLO**: 99.9% of requests served with good events in the past 28 days
 
